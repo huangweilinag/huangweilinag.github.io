@@ -1,5 +1,7 @@
-<aside id="sidebar"<% if (theme.sidebar === 'bottom'){ %> class="outer"<% } %>>
-  <% theme.widgets.forEach(function(widget){ %>
-    <%- partial('_widget/' + widget) %>
-  <% }) %>
-</aside>
+<% if(theme.widgets && theme.widgets.length >0){ %>
+    <aside class="col-md-4 sidebar">
+        <% theme.widgets.forEach(function(widget){ %>
+        <%- partial('_widget/' + widget) %>
+        <% }) %>
+    </aside>
+<%}%>

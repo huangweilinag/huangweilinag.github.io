@@ -1,8 +1,12 @@
-<% if (site.categories.length){ %>
-  <div class="widget-wrap">
-    <h3 class="widget-title"><%= __('categories') %></h3>
+<% if(site.categories.length){ %>
     <div class="widget">
-      <%- list_categories({show_count: theme.show_count}) %>
+        <h3 class="title"><%= __('categories') %></h3>
+        <%- list_categories({
+            showcount: theme.cate_config.show_count,
+            transform: function(name){
+                return '<i class="fa" aria-hidden="true">'+name+'</i>';
+            },
+            show_current: theme.cate_config.show_current
+            }) %>
     </div>
-  </div>
 <% } %>
