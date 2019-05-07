@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="黄伟梁个人博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://yoursite.com">
+    <!--SEO-->
+
+    <meta name="keywords" content="工具">
+
+
+    <meta name="description" content="git 工作流
+前言一、 分支介绍1.1 主分支（master）​    主分支上包含线上正在运行的代码
+1.2 开发分支（develop）​    开发分支是基于主分支创建的分支，主要用户提交...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>git工作流 | 黄伟梁个人博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="黄伟梁个人博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?17c942ddf91b0769181a93cc8cad738c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/./img/header.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="huangweiliang">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 用心做好每一件事 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://yoursite.com">黄伟梁个人博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/其他/"><i class="fa "></i>其他</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="git工作流">
+            
+	            git工作流
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/工具/">工具</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/05/07</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="git-工作流"><a href="#git-工作流" class="headerlink" title="git 工作流"></a>git 工作流</h1><p><img src="/images/git01.png" alt="img"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h3 id="一、-分支介绍"><a href="#一、-分支介绍" class="headerlink" title="一、 分支介绍"></a>一、 分支介绍</h3><h4 id="1-1-主分支（master）"><a href="#1-1-主分支（master）" class="headerlink" title="1.1 主分支（master）"></a>1.1 主分支（master）</h4><p>​    主分支上包含线上正在运行的代码</p>
+<h4 id="1-2-开发分支（develop）"><a href="#1-2-开发分支（develop）" class="headerlink" title="1.2 开发分支（develop）"></a>1.2 开发分支（develop）</h4><p>​    开发分支是基于主分支创建的分支，主要用户提交我们日常开发，且经过测试通过的并准备上线的代码</p>
+<h4 id="1-3-临时分支（feature-功能、bugfix-功能）"><a href="#1-3-临时分支（feature-功能、bugfix-功能）" class="headerlink" title="1.3 临时分支（feature/功能、bugfix/功能）"></a>1.3 临时分支（feature/功能、bugfix/功能）</h4><p>​    临时分支是基于develop或者master分支创建的，在使用完成后可直接delete的分支</p>
+<ul>
+<li>特性分支（feature）</li>
+</ul>
+<p>​            特性分支是基于开发分支（develop）创建的开发分支，主要用于完成某个功能模块的开发，开发完成后再次并入develop。</p>
+<p>​    例如开发资讯功能，新建分支为： feature/information</p>
+<ul>
+<li>修补Bug分支<br>修补Bug分支是基于master创建的临时分支，主要用于修改线上的Bug，并要及时上线。bugfix分支测试通过后直接并入master分支。然后develop分支同步master分支代码，其他特性分支同步develop分支代码</li>
+</ul>
+<h4 id="1-4-临时部署分支（publish）"><a href="#1-4-临时部署分支（publish）" class="headerlink" title="1.4 临时部署分支（publish）"></a>1.4 临时部署分支（publish）</h4><h3 id="二、工作流"><a href="#二、工作流" class="headerlink" title="二、工作流"></a>二、工作流</h3><h4 id="2-1-流程相关命令（一）"><a href="#2-1-流程相关命令（一）" class="headerlink" title="2.1 流程相关命令（一）"></a>2.1 流程相关命令（一）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#本地创建develop分支</span><br><span class="line">	git checkout --track origin/develop</span><br><span class="line">#更新本地develop分支代码</span><br><span class="line">	git pull origin develop </span><br><span class="line">#创建特性分支</span><br><span class="line">	git checkout develop</span><br><span class="line">	git checkout -b feature/social</span><br><span class="line">#特性分支同步develop分支代码</span><br><span class="line">	git rebase develop</span><br><span class="line">#特性分支代码并入develop</span><br><span class="line">    git checout develop</span><br><span class="line">    git merge feature/social --squash</span><br><span class="line">    git add .</span><br><span class="line">    git commit -m &quot;合并社保功能代码&quot;</span><br><span class="line">    git push origin develop</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-流程相关命令（二）"><a href="#2-2-流程相关命令（二）" class="headerlink" title="2.2 流程相关命令（二）"></a>2.2 流程相关命令（二）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//-----------开始开发新功能-------------------</span></span><br><span class="line"><span class="number">1.</span>在远程基于dev branch 创建一个自已任务的新分支，feature/分支名， 如：feature/test_3</span><br><span class="line"><span class="number">2.</span>在本地切换至 dev branch, 基于当前的dev branch 拉取最新的内容：</span><br><span class="line">	git checkout dev			<span class="comment">//本地切换至 dev branch</span></span><br><span class="line">	git pull					<span class="comment">//些时新建的分支会在pull的内容中</span></span><br><span class="line"><span class="number">3.</span>在本地当创建分支同时使本地分支追踪远程分支：</span><br><span class="line">	git checkout --track origin/feature/test_3</span><br><span class="line"><span class="comment">//-----------开发中-------------------（重复执行）	</span></span><br><span class="line"><span class="number">4.</span>基于当前分支做修改之后，添加并提交：</span><br><span class="line">	git add .					<span class="comment">//当前目录下所有新的文件添加到git中</span></span><br><span class="line">	git commit -m <span class="string">'提交描述'</span>		<span class="comment">//打包到本地</span></span><br><span class="line">	git pull					<span class="comment">//拉取远程代码到本地</span></span><br><span class="line">	git push					<span class="comment">//提交到远程仓库</span></span><br><span class="line"><span class="comment">//-----------开发完成-------------------</span></span><br><span class="line"><span class="number">5.</span>提交之后切换至dev分支拉取最新的代码做merge,存在冲突解决，没有则push:</span><br><span class="line">	git checkout dev			<span class="comment">//本地切换至 dev branch</span></span><br><span class="line">	git pull					<span class="comment">//拉取代码</span></span><br><span class="line">	git checkout feature/test_3	<span class="comment">//本地切换至 feature/test_3</span></span><br><span class="line">	git merge dev				<span class="comment">//查看是否存在冲突</span></span><br><span class="line">	git push					<span class="comment">//推代码到远程</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、-常用命令"><a href="#三、-常用命令" class="headerlink" title="三、 常用命令"></a>三、 常用命令</h3><h4 id="3-1-简单使用"><a href="#3-1-简单使用" class="headerlink" title="3.1 简单使用"></a>3.1 简单使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit</span><br><span class="line">git push</span><br><span class="line">git pull</span><br><span class="line">git clone https://xxxxxxxxx.com</span><br><span class="line">git rebase</span><br><span class="line">git stash</span><br><span class="line">git checkout dev</span><br><span class="line">git checkout -</span><br><span class="line">git branch</span><br><span class="line">git merge dev</span><br><span class="line">git log</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-通过命令直接修改远程地址"><a href="#3-2-通过命令直接修改远程地址" class="headerlink" title="3.2 通过命令直接修改远程地址"></a>3.2 通过命令直接修改远程地址</h4><p>进入git_test根目录 git remote 查看所有远程仓库， git remote xxx 查看指定远程仓库地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin http://192.168.100.235:9797/john/git_test.git</span><br></pre></td></tr></table></figure>
+<h3 id="四、把连续的多个commit-整理成1个"><a href="#四、把连续的多个commit-整理成1个" class="headerlink" title="四、把连续的多个commit 整理成1个"></a>四、把连续的多个commit 整理成1个</h3><p><a href="https://blog.csdn.net/u013276277/article/details/82470177" target="_blank" rel="noopener">参考资料1</a>  <a href="https://www.cnblogs.com/icepeach/p/5283479.html" target="_blank" rel="noopener">参考资料2</a></p>
+<ol>
+<li><p>git log     // 查看提交记录</p>
+</li>
+<li><p>git rebase -i commitId         // commitId 需合并的上一个commit Id</p>
+<p>选择需要合并的commit</p>
+<blockquote>
+<p>(1) 处理</p>
+<p>​    pick 的意思是要会执行这个 commit<br>​    squash 的意思是这个 commit 会被合并到前一个commit</p>
+<p>​    :wq 保存修改</p>
+<p>(2) 编写新的commit</p>
+<p>​    :wq保存修改</p>
+</blockquote>
+</li>
+<li><p>git push –force        // 合并完成后需要一次强制的push, 要加入<code>--force</code>覆盖掉github上的commit</p>
+<p>(不安全操作)</p>
+</li>
+</ol>
+<h3 id="五、可视化客户端"><a href="#五、可视化客户端" class="headerlink" title="五、可视化客户端"></a>五、可视化客户端</h3><h4 id="5-1-sourcetree"><a href="#5-1-sourcetree" class="headerlink" title="5.1 sourcetree"></a>5.1 sourcetree</h4><p>SourceTree 是 Windows 和Mac OS X 下免费的 <a href="http://lib.csdn.net/base/git" target="_blank" rel="noopener">Git</a> 和 Hg 客户端，拥有可视化界面，容易上手操作。同时它也是Mercurial和Subversion<a href="http://lib.csdn.net/base/git" target="_blank" rel="noopener">版本控制</a>系统工具。支持创建、提交、clone、push、pull 和merge等操作。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener"><em>Git</em>教程 - 廖雪峰的官方网站</a></li>
+<li><a href="https://blog.csdn.net/u013276277/article/details/82470177" target="_blank" rel="noopener">git 几个commit点合并成一个commit点</a></li>
+<li><a href="https://www.cnblogs.com/icepeach/p/5283479.html" target="_blank" rel="noopener">git合并多个commit</a></li>
+<li>[SourceTree详细使用教程](<a href="http://blog.cocoachina.com/article/71732）" target="_blank" rel="noopener">http://blog.cocoachina.com/article/71732）</a></li>
+</ol>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="../../../../img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">HuangWeiLiang</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/05/07/阿里云服务器使用总结/" class="next-post btn btn-default" title="阿里云服务器使用总结">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">阿里云服务器使用总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'rCmbafal7DVFVWvGPCes5hrS-gzGzoHsz',
+            appKey: 'UNq94EexLuc135yINegXz3sg',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: ''.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#git-工作流"><span class="toc-text">git 工作流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、-分支介绍"><span class="toc-text">一、 分支介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-主分支（master）"><span class="toc-text">1.1 主分支（master）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-开发分支（develop）"><span class="toc-text">1.2 开发分支（develop）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-临时分支（feature-功能、bugfix-功能）"><span class="toc-text">1.3 临时分支（feature/功能、bugfix/功能）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-临时部署分支（publish）"><span class="toc-text">1.4 临时部署分支（publish）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、工作流"><span class="toc-text">二、工作流</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-流程相关命令（一）"><span class="toc-text">2.1 流程相关命令（一）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-流程相关命令（二）"><span class="toc-text">2.2 流程相关命令（二）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、-常用命令"><span class="toc-text">三、 常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-简单使用"><span class="toc-text">3.1 简单使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-通过命令直接修改远程地址"><span class="toc-text">3.2 通过命令直接修改远程地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、把连续的多个commit-整理成1个"><span class="toc-text">四、把连续的多个commit 整理成1个</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、可视化客户端"><span class="toc-text">五、可视化客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-sourcetree"><span class="toc-text">5.1 sourcetree</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
