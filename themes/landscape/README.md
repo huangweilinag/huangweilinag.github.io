@@ -81,7 +81,7 @@ npm i hexo-renderer-ejs hexo-renderer-less hexo-deployer-git -S
 
 1. gulp打包构建，拷贝主题目录下`package.json`文件到Hexo根目录下，然后安装项目的开发依赖。  [Gulp入门指南](http://www.gulpjs.com.cn/docs/getting-started/)
 ``` bash
-npm i   //安装项目依赖
+npm i   //**安装项目依赖**
 ```
 
 2. 在Hexo根目录下创建一个名为 gulpfile.js 的文件：

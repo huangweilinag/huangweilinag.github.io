@@ -9,13 +9,13 @@ menu:
   url: /
   icon:
 - page: 前端
-  url: /categories/前端/
+  url: /tags/前端/
   icon:
 - page: 后端
-  url: /categories/后端/
+  url: /tags/后端/
   icon:
-- page: 工具
-  url: /categories/工具/
+- page: 其他
+  url: /tags/其他/
   icon:
 - page: 时间轴
   url: /archives/
@@ -38,7 +38,6 @@ carousel:
 widgets:
   - search
   - notification
-  - social
   - category
   - archive
   - tagcloud
@@ -48,7 +47,7 @@ widgets:
 ## 搜索
 jsonContent:
   searchLocal: true
-  searchGoogle: false
+  searchGoogle: true
   posts:
     title: true
     text: true
@@ -59,9 +58,7 @@ jsonContent:
 ## 网站公告设置
 notification: |-
             <p>
-                主题下载：<a href="https://github.com/shenliyang/hexo-theme-snippet" title="fork me" target="_blank">Snippet主题</a> <br/>
-                主题使用：<a href="https://github.com/shenliyang/hexo-theme-snippet/blob/master/README.md#常见问题" title="" target="_blank">常见使用问题</a> <br/>
-                支持主题：<a href="https://github.com/shenliyang/hexo-theme-snippet/stargazers">Star一下</a>
+              博客搭建学习，欢迎各位提意见
             </p>
 
 ## 社交设置
@@ -117,11 +114,11 @@ links:
 # 主题自定义个性化配置
 
 ## 网站宣传语
-branding:
+branding: 用心做好每一件事
 
 ## 设置banner背景图片
 banner:
-    img: http://snippet.shenliyang.com/img/banner.jpg
+    img: './img/header.jpg'
 
 ## 首页列表底部面板
 homePanel: true
@@ -155,12 +152,12 @@ declaration:
   enable: true
   title: '转载声明'
   tip: |-
-      商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+      商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">HuangWeiLiang</a>
 
 ## 文章打赏
 reward:
   alipay: ''
-  wepay: ''
+  wepay: '../../../../img/reward-wepay.jpg'
   tip: 赞赏是不耍流氓的鼓励
 
 ## 主题评论
@@ -168,8 +165,8 @@ reward:
 ## Valine评论
 valine:
    enable: true
-   appId: xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz
-   appKey: erIpQac4azoCmgfBB7Dl9maa
+   appId: rCmbafal7DVFVWvGPCes5hrS-gzGzoHsz
+   appKey: UNq94EexLuc135yINegXz3sg
    placeholder: 说点什么吧
    notify: false
    verify: false
@@ -222,8 +219,8 @@ uyan:
 
 ## 网站访客统计
 visit_counter:
-   site: false
-   page: false
+   site: true
+   page: true
 
 ## 网站访问统计分析
 
@@ -231,7 +228,7 @@ visit_counter:
 cnzz_analytics: 1263868967
 
 ### 百度统计
-baidu_analytics:
+baidu_analytics: 17c942ddf91b0769181a93cc8cad738c
 
 ### 谷歌统计
 google_analytics:
@@ -246,6 +243,6 @@ baidu_site_verification:
 baidu_push: false
 
 #网站主题配置
-since: 2017
+since: 2019
 robot: 'all' ### 控制搜索引擎的抓取和索引编制行为，默认为all
-version: 1.2.1
+version: 1.0.1
