@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="黄伟梁个人博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://yoursite.com">
+    <!--SEO-->
+
+    <meta name="keywords" content>
+
+
+    <meta name="description" content="前言Vue 官网推出vue-cli 功能很强大，使用很方便，我们就想这样一个脚手架是怎么实现的，查阅了相关资料后，准备做了一简版的脚手架，熟悉一下大概流程，在工作中，需要开发一个脚手架，用于给相...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>nodejs实现脚手架 | 黄伟梁个人博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="黄伟梁个人博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?17c942ddf91b0769181a93cc8cad738c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/./img/header.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="huangweiliang">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 用心做好每一件事 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://yoursite.com">黄伟梁个人博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/tags/其他/"><i class="fa "></i>其他</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="nodejs实现脚手架">
+            
+	            nodejs实现脚手架
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/07/09</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Vue 官网推出vue-cli 功能很强大，使用很方便，我们就想这样一个脚手架是怎么实现的，查阅了相关资料后，准备做了一简版的脚手架，熟悉一下大概流程，在工作中，需要开发一个脚手架，用于给相关用户提供相关的开发便利性。</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><ol>
+<li><p>开发一个简单的脚手架，能够提供给用户进行安装。</p>
+</li>
+<li><p>能够输出相关提示。</p>
+</li>
+<li><p>对用户文件进行读写操作。</p>
+</li>
+<li><p>在脚手架中使用Shell脚本。</p>
+</li>
+</ol>
+<h3 id="相关插件"><a href="#相关插件" class="headerlink" title="相关插件"></a>相关插件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vue-cli 	// vue 脚手架</span><br><span class="line">commander </span><br><span class="line">inquirer	// 交互插件</span><br><span class="line">chalk 		//是一个日志的样式库</span><br></pre></td></tr></table></figure>
+<h3 id="commander插件"><a href="#commander插件" class="headerlink" title="commander插件"></a>commander插件</h3><h5 id="·version-作用：定义命令程序的版本号"><a href="#·version-作用：定义命令程序的版本号" class="headerlink" title="·version (作用：定义命令程序的版本号)"></a>·version (作用：定义命令程序的版本号)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.version(&apos;0.0.1&apos;, &apos;-v, --version&apos;)</span><br><span class="line">参数解析：</span><br><span class="line">	① 版本号&lt;必须&gt;</span><br><span class="line">	② 自定义标志&lt;可省略&gt;：默认为 `-V` 和 `--version`</span><br></pre></td></tr></table></figure>
+<h5 id="·option-作用：用于定义命令选项"><a href="#·option-作用：用于定义命令选项" class="headerlink" title="·option (作用：用于定义命令选项)"></a>·option (作用：用于定义命令选项)</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.option(<span class="string">'-n, --name&lt;path&gt;'</span>, <span class="string">'name description'</span>, <span class="string">'default name'</span>)</span><br><span class="line">例：.option(<span class="string">'-a, --aaa'</span>, <span class="string">'aaaaa'</span>)</span><br><span class="line">参数解析：</span><br><span class="line">	① 自定义标志&lt;必须&gt;：分为长短标识，中间用逗号、竖线或者空格分割；标志后面可跟必须参数或可选参数，前者用&lt;&gt; 包含，后者用 [] 包含</span><br><span class="line">	② 选项描述&lt;省略不报错&gt;：在使用 --help 命令时显示标志描述</span><br><span class="line">	③ 默认值&lt;可省略&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="·command-作用：添加命令名称"><a href="#·command-作用：添加命令名称" class="headerlink" title="·command (作用：添加命令名称)"></a>·command (作用：添加命令名称)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.command(&apos;rmdir &lt;dir&gt; [otherDirs...]&apos;, &apos;install description&apos;, opts)</span><br><span class="line">参数解析：</span><br><span class="line">	① 命令名称&lt;必须&gt;：命令后面可跟用 &lt;&gt; 或 [] 包含的参数；命令的最后一个参数可以是可变的，像实例中那样在数组后面加入 ... 标志；在命令后面传入的参数会被传入到 action 的回调函数以及 program.args 数组中</span><br><span class="line">	② 命令描述&lt;可省略&gt;：如果存在，且没有显示调用action(fn)，就会启动子命令程序，否则会报错</span><br><span class="line">	③ 配置选项&lt;可省略&gt;：可配置noHelp、isDefault等</span><br></pre></td></tr></table></figure>
+<h5 id="·description-作用：定义命令的描述"><a href="#·description-作用：定义命令的描述" class="headerlink" title="·description (作用：定义命令的描述)"></a>·description (作用：定义命令的描述)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.description(&apos;rmdir desc&apos;)</span><br></pre></td></tr></table></figure>
+<h5 id="·action-作用：定义命令的回调函数"><a href="#·action-作用：定义命令的回调函数" class="headerlink" title="·action (作用：定义命令的回调函数)"></a>·action (作用：定义命令的回调函数)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.action(fn)</span><br></pre></td></tr></table></figure>
+<h5 id="·parse-作用：用于解析process-argv，设置options以及触发commands"><a href="#·parse-作用：用于解析process-argv，设置options以及触发commands" class="headerlink" title="·parse (作用：用于解析process.argv，设置options以及触发commands)"></a>·parse (作用：用于解析process.argv，设置options以及触发commands)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用法示例：.parse(process.argv)</span><br></pre></td></tr></table></figure>
+<h3 id="如何实现一个简单的Node-js脚手架"><a href="#如何实现一个简单的Node-js脚手架" class="headerlink" title="如何实现一个简单的Node.js脚手架"></a>如何实现一个简单的Node.js脚手架</h3><h4 id="开发脚手架"><a href="#开发脚手架" class="headerlink" title="开发脚手架"></a>开发脚手架</h4><p>脚手架的开发最开始过程与普通的前端项目相同，需要一个入口文件<code>command.js</code>和配置文件<code>package.json</code>。</p>
+<p>与其他配置文件不同的是，你需要在<code>command.js</code>文件第一行增加如下声明：</p>
+<p>command.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node				// 指定脚本的执行程序</span></span><br></pre></td></tr></table></figure>
+<p>package.json</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"hwl-cli"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"bin"</span>: &#123;</span><br><span class="line">    <span class="string">"hwl-cli"</span>: <span class="string">"command.js"</span>			<span class="comment">// 同时需要在package.json文件中加上这一项</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="string">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"commander"</span>: <span class="string">"^2.19.0"</span>			<span class="comment">// 是一个提供用户命令行输入和参数解析的强大功能</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在配置文件中增加了此项后，只需要在配置文件根目录下执行<code>npm link</code>命令，即可使用<code>hlw-cli</code>命令来查看加载的aa-cli脚手架, 在终端输入<code>hwl-cli</code> 不报错，说明已成功。</p>
+<p>如果你发布了你的脚手架，那么在其他用户使用命令<code>npm install -g aa-cli</code>之后，便可以在全局下使用你的脚手架了。</p>
+<h4 id="对用户进行提示"><a href="#对用户进行提示" class="headerlink" title="对用户进行提示"></a>对用户进行提示</h4><p>在对注释和命令进行提示中，我们需要使用到<code>commander</code>包，使用<code>npm install commander</code>即可进行安装。（如果NPM版本低于5，则需要添加–save参数保证更新<code>package.json</code>配置文件）。</p>
+<p><code>commander</code>是一个提供用户命令行输入和参数解析的强大功能。有需要的可以阅读相关的库文档。在这里我介绍两个用的最多的方法。</p>
+<h4 id="option-注：需安装commander插件才能使下面功能正常使用"><a href="#option-注：需安装commander插件才能使下面功能正常使用" class="headerlink" title="option(注：需安装commander插件才能使下面功能正常使用)"></a>option(注：需安装commander插件才能使下面功能正常使用)</h4><p>能够初始化自定义的参数对象，设置关键字和描述，同时还可以设置读取用户输入的参数。具体用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">const commander = require(&apos;commander&apos;);</span><br><span class="line"></span><br><span class="line">commander.version(&apos;1.0.0&apos;)</span><br><span class="line">    .option(&apos;-a, --aaa&apos;, &apos;aaaaa&apos;)</span><br><span class="line">    .option(&apos;-b, --bbb&apos;, &apos;bbbbb&apos;)</span><br><span class="line">    .option(&apos;-c, --ccc [name]&apos;, &apos;ccccc&apos;)</span><br><span class="line">    .parse(process.argv);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if (commander.aaa) &#123;</span><br><span class="line">    console.log(&apos;aaa&apos;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (commander.bbb) &#123;</span><br><span class="line">    console.log(&apos;bbb&apos;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (commander.ccc) &#123;</span><br><span class="line">    console.log(&apos;ccc&apos;, commander.ccc);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="../../../../img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">HuangWeiLiang</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/05/23/拖拽实现一个IOS demo/" class="next-post btn btn-default" title="拖拽实现一个IOS demo">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">拖拽实现一个IOS demo</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'rCmbafal7DVFVWvGPCes5hrS-gzGzoHsz',
+            appKey: 'UNq94EexLuc135yINegXz3sg',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: ''.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关插件"><span class="toc-text">相关插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#commander插件"><span class="toc-text">commander插件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#·version-作用：定义命令程序的版本号"><span class="toc-text">·version (作用：定义命令程序的版本号)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#·option-作用：用于定义命令选项"><span class="toc-text">·option (作用：用于定义命令选项)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#·command-作用：添加命令名称"><span class="toc-text">·command (作用：添加命令名称)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#·description-作用：定义命令的描述"><span class="toc-text">·description (作用：定义命令的描述)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#·action-作用：定义命令的回调函数"><span class="toc-text">·action (作用：定义命令的回调函数)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#·parse-作用：用于解析process-argv，设置options以及触发commands"><span class="toc-text">·parse (作用：用于解析process.argv，设置options以及触发commands)</span></a></li></ol></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#如何实现一个简单的Node-js脚手架"><span class="toc-text">如何实现一个简单的Node.js脚手架</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#开发脚手架"><span class="toc-text">开发脚手架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对用户进行提示"><span class="toc-text">对用户进行提示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#option-注：需安装commander插件才能使下面功能正常使用"><span class="toc-text">option(注：需安装commander插件才能使下面功能正常使用)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> |
+                <span>
+                    huangweiliang
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
